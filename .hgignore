@@ -1,0 +1,11 @@
+syntax: glob
+.DS_Store
+.settings
+.project
+.pydevproject
+*.pyc
+*.log
+build
+dist
+MANIFEST
+docs/_build

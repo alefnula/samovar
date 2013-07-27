@@ -1,0 +1,5 @@
+recursive-include docs
+include *.rst
+include LICENSE
+include AUTHORS
+include setup.py
