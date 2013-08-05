@@ -17,8 +17,9 @@ def humanize(time):
     else:
         return '%s days %s' % (time / 86400, humanize(time % 86400))
 
+
 def indent(text, indent=2):
-    return '\n'.join(['%s%s' % (indent*' ', line) for line in text.splitlines()])
+    return '\n'.join(['%s%s' % (' ' * indent, line) for line in text.splitlines()])
 
 
 def serial_json(data):
@@ -29,5 +30,6 @@ def serial_json(data):
             item, offset = decoder.raw_decode(data)
             items.append(item)
             data = data[offset:]
-        except ValueError: break 
+        except ValueError:
+            break
     return items, data

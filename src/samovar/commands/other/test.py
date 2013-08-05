@@ -8,6 +8,6 @@ from tea.commander import BaseCommand
 
 class Command(BaseCommand):
     '''Command used for testing things out'''
-    
+
     def handle(self, *args, **kwargs):
         pass

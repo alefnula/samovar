@@ -8,7 +8,6 @@ from tea.commander import BaseCommand
 from samovar import utils
 
 
-
 class RepositoryNotFound(Exception):
     def __init__(self, name):
         super(RepositoryNotFound, self).__init__()
@@ -17,9 +16,9 @@ class RepositoryNotFound(Exception):
 
 class Command(BaseCommand):
     '''Repository management
-    
+
     All these commands work on the currently selected workspace:
-    
+
     repo list                   # Lists all repositories in the current workspace
     repo get NAME               # Prints information about the selected repo
     repo add                    # Add repo to current workspace
@@ -52,25 +51,25 @@ class Command(BaseCommand):
         prefix = self.ui.ask('Prefix: ') or None
         username, password = self.config.credentials_for(url)
         repos = utils.get_repos_from_web(self.ui, url, prefix, username, password)
-        self.ui.info('Choose repositoreis:')
+        self.ui.info('Choose repositories:')
         for name, repo in repos:
             answer = self.ui.ask('[Y/n] %s: ' % name)
             if answer.lower() in ('y', ''):
                 yield name, repo
-                
+
     def repo_get(self, name):
         workspace = self.config.active_workspace
         if name not in workspace['repositories']:
             raise RepositoryNotFound(name)
         return name, workspace['repositories'][name]
-    
+
     def print_repo(self, name, repo):
         self.ui.info('Name:   ', False)
         self.ui.message(name)
         self.ui.info('Source: ', False)
         self.ui.message(repo['source'])
         self.ui.message('')
-    
+
     # Alias functions
     def print_alias(self, alias, value):
         self.ui.warn(alias, False)
@@ -95,7 +94,7 @@ class Command(BaseCommand):
             # del
             elif cmd == 'del' and l == 2:
                 alias = args[1]
-                self.config.delete('workspaces.%s.aliases.%s' % (active, args[1]))                
+                self.config.delete('workspaces.%s.aliases.%s' % (active, args[1]))
             # unknown command
             else:
                 print(self.usage())

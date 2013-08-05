@@ -9,11 +9,11 @@ import urllib
 import logging
 
 try:
-    import urlparse
-    import urllib2 as request
+    import urlparse  # @UnusedImport
+    import urllib2 as request  # @UnusedImport
 except:
-    from urllib import request
-    import urllib.parse as urlparse 
+    from urllib import request  # @UnresolvedImport @Reimport
+    import urllib.parse as urlparse  # @UnresolvedImport @Reimport
 
 # tea imports
 from tea import shutil

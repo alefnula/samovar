@@ -16,7 +16,7 @@ def main(args):
     from samovar import options
     from samovar.config import Configuration
     from samovar.parsing import StatusStyle, StatusLexer
-    
+
     class Samovar(Application):
         def __init__(self):
             super(Samovar, self).__init__(args, ['samovar.commands'], {
@@ -28,7 +28,7 @@ def main(args):
             Configuration)
             self._ui.formatter.style = StatusStyle
             self._ui.formatter.lexer = StatusLexer()
-        
+
         # HACK: This is a hack for configuring the logging after the
         #       options and configuration file is loaded. Should be
         #       changed somehow :-/
@@ -41,7 +41,7 @@ def main(args):
             else:
                 configure_logging(stdout_level=logging.WARNING)
             return parser, args, config
-            
+
     app = Samovar()
     app.execute()
 

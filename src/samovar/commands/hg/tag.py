@@ -8,19 +8,19 @@ from ._parsing import HgStyle, HgLexer
 
 class Command(BaseCommand):
     '''Adds tag to repositories.
-    
+
     Tag name is required.
     '''
-    
+
     option_list = BaseCommand.option_list + (
         ('l, local',   {'action': 'store_true', 'help': 'Make the tag local'}),
         ('m, message', {'action': 'store',      'help': 'Commit message.'}),
-        ('u, user',    {'action': 'store',      'help': 'Record specified user as commiter'}),
+        ('u, user',    {'action': 'store',      'help': 'Record specified user as committer'}),
     )
-    
+
     Style = HgStyle
     Lexer = HgLexer
-    
+
     def handle(self, tag, local, message, user):
         for repo in self.config.repositories:
             status, output, error = repo.hg.tag(tag, local=local, message=message, user=user)

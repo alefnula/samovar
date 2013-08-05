@@ -6,45 +6,40 @@ import os
 import logging
 
 try:
-    from urlparse import urlparse     # py2
+    from urlparse import urlparse      # py2
 except ImportError:
-    from urllib.parse import urlparse # py3
+    from urllib.parse import urlparse  # py3
 
-# tea imports
 from tea.scm import Repository
 from tea.system import platform
 from tea.ds.config import MultiConfig
 from tea.console.color import cprint, Color
 from tea.utils.crypto import decrypt
-# samovar imports
 from samovar import utils
 
 logger = logging.getLogger(__name__)
-
 
 
 class ConfigurationError(Exception):
     def __init__(self, message):
         super(ConfigurationError, self).__init__()
         self.message = message
-    
+
     def __repr__(self):
         return 'ConfigurationError: %s' % self.message
     __str__ = __repr__
-
 
 
 class LambdaDict(object):
     '''This provides lazy evaluation of lambda functions'''
     def __init__(self, d):
         self.d = d
-    
+
     def __getitem__(self, name):
         return self.d[name]()
 
 
-
-class Configuration(MultiConfig):   
+class Configuration(MultiConfig):
     def __init__(self, *args, **kwargs):
         super(Configuration, self).__init__(*args, **kwargs)
         self.__repositories    = None
@@ -53,7 +48,7 @@ class Configuration(MultiConfig):
         if platform.is_a(platform.WINDOWS):
             self.executables = LambdaDict({
                 '7z'           : lambda: utils.find_exe('pf',  ['7-Zip', '7z.exe'], '7z.exe'),
-                'devenv'       : lambda: utils.find_exe('pf',  ['Microsoft Visual Studio 1?.0', 'Common7', 'IDE', 'devenv.com'], 'devenv.com'), # MUST BE .COM!!! NOT .EXE!!!
+                'devenv'       : lambda: utils.find_exe('pf',  ['Microsoft Visual Studio 1?.0', 'Common7', 'IDE', 'devenv.com'], 'devenv.com'),  # MUST BE .COM!!! NOT .EXE!!!
                 'msbuild'      : lambda: utils.find_exe('win', ['Microsoft.NET', 'Framework', 'v4.0.30319', 'msbuild.exe'], 'msbuild.exe'),
                 'msbuild_2008' : lambda: utils.find_exe('win', ['Microsoft.NET', 'Framework', 'v3.5', 'msbuild.exe'], 'msbuild.exe'),
                 'nunit'        : lambda: utils.find_exe('pf',  ['NUnit 2.*.*', 'bin', 'net-2.0', 'nunit-console.exe'], 'nunit-console.exe'),
@@ -67,27 +62,27 @@ class Configuration(MultiConfig):
                 'msbuild'      : 'xbuild',
                 'python'       : 'python',
             }
-    
+
     @property
     def active(self):
         active = self.get('active')
         if active is None:
             raise ConfigurationError('None of the workspaces is active')
         return active
-    
+
     @property
     def active_workspace(self):
         return self.get('workspaces.%s' % self.active)
-    
+
     @property
     def active_path(self):
         '''Returns the current workspace path'''
         return self.active_workspace['path']
-    
+
     @property
     def logdir(self):
         return os.path.join(self.active_path, 'logs')
-    
+
     @property
     def all_repositories(self):
         workspace = self.active_workspace
@@ -98,13 +93,8 @@ class Configuration(MultiConfig):
         for name in sorted(workspace['repositories']):
             repo = workspace['repositories'][name]
             username, password = self.credentials_for(repo['source'])
-            repos.append(Repository(
-                name     = name,
-                path     = os.path.abspath(os.path.join(workspace['path'], name)),
-                source   = repo['source'],
-                username = username,
-                password = password,
-            ))
+            repos.append(Repository(name=name, path=os.path.abspath(os.path.join(workspace['path'], name)),
+                                    source=repo['source'], username=username, password=password))
         return repos
 
     @property

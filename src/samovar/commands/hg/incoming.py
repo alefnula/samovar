@@ -9,19 +9,19 @@ from ._parsing import HgStyle, HgLexer, Token, PARSERS
 
 class Command(BaseCommand):
     '''Perform hg incoming on all required repositories'''
-    
+
     Style = HgStyle
     Lexer = HgLexer
     LexerConfig = {
         'statuses' : {
             0: Token.Changed,
             1: Token.NoChanges,
-           -1: Token.Changed, # new repository
+           -1: Token.Changed,  # new repository
         },
         'parse'  : True,
         'parser' : PARSERS['changeset']
     }
-    
+
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
             status, output, error = repo.hg.incoming()

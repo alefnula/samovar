@@ -8,16 +8,17 @@ from tea.commander import BaseCommand
 
 from ._parsing import HgStyle, HgLexer
 
+
 class Command(BaseCommand):
     '''Perform hg clone of all needed repositories'''
-    
+
     option_list = BaseCommand.option_list + (
         ('d, delete', {'action': 'store_true', 'help': 'delete workspace before checkouting'}),
     )
 
     Style = HgStyle
     Lexer = HgLexer
-    
+
     def handle(self, delete=False, *args, **kwargs):
         if delete and os.path.exists(self.config.active_path):
             shutil.remove(self.config.active_path)

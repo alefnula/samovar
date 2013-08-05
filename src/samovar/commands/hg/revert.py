@@ -6,12 +6,13 @@ __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 from tea.commander import BaseCommand
 from ._parsing import HgStyle, HgLexer
 
+
 class Command(BaseCommand):
     '''Perform hg revert on all requested repositories'''
-    
+
     Style = HgStyle
     Lexer = HgLexer
-    
+
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
             status, output, error = repo.hg.revert()

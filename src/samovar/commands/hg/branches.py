@@ -9,11 +9,11 @@ from ._parsing import HgStyle, HgLexer
 
 class Command(BaseCommand):
     '''Performs hg branches.'''
-    
+
     Style       = HgStyle
     Lexer       = HgLexer
     LexerConfig = {'parse': True}
-    
+
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
             status, output, error = repo.hg.branches()

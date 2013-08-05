@@ -8,7 +8,7 @@ from ._parsing import Token, HgStyle, HgLexer
 
 class Command(BaseCommand):
     '''Perform hg push of all needed repositories'''
-    
+
     Style = HgStyle
     Lexer = HgLexer
     LexerConfig = {
@@ -17,12 +17,12 @@ class Command(BaseCommand):
             1 : Token.NoChanges,
         }
     }
-    
+
     option_list = BaseCommand.option_list + (
         ('new-branch', {'action': 'store_true', 'help': 'allow pushing a new branch'}),
     )
-    
+
     def handle(self, new_branch, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.push(new_branch=new_branch) 
+            status, output, error = repo.hg.push(new_branch=new_branch)
             self.ui.report(repo, status, {'output': output, 'error': error})

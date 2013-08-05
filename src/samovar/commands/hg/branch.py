@@ -6,14 +6,16 @@ from tea.commander import BaseCommand
 
 from ._parsing import HgStyle, HgLexer
 
-class Command(BaseCommand):    
-    ''' Performs hg branch command on repositories. '''
-    
+
+class Command(BaseCommand):
+    ''' Performs hg branch command on repositories.
+    '''
+
     Style       = HgStyle
     Lexer       = HgLexer
     LexerConfig = {'parse': True}
-    
+
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.branch() 
+            status, output, error = repo.hg.branch()
             self.ui.report(repo, status, {'output': output, 'error': error})

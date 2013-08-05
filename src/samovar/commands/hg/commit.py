@@ -13,7 +13,7 @@ class Command(BaseCommand):
         ('A, addremove', {'action': 'store_true', 'help': 'mark new/missing files as added/removed before'}),
         ('m, message', {'action': 'store', 'help': 'use this as a commit message'}),
         ('amend', {'action': 'store_true', 'help': 'Amend the parent of the working dir.'}),
-        ('u, user', {'action': 'store', 'help': 'Record the specified user as commiter.'}),
+        ('u, user', {'action': 'store', 'help': 'Record the specified user as committer.'}),
     )
 
     Style = HgStyle

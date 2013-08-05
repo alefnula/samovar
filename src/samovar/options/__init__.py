@@ -5,9 +5,6 @@ __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 import os
 import re
 
-from tea.logger import * #@UnusedWildImport
-
-# autotest imports
 from .options import OPTIONS
 from .defaults import DEFAULTS
 

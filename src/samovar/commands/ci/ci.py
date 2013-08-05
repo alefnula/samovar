@@ -6,11 +6,11 @@ __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 import re
 from datetime import datetime
-# tea imports
 from tea.cron import Cron
 from tea.commander import BaseCommand
 
 pattern = re.compile('^(?P<year>[^\|]+)\|(?P<month>[^\|]+)\|(?P<day>[^\|]+)\|(?P<day_of_week>[^\|]+)\|(?P<hour>[^\|]+)\|(?P<minute>[^\|]+)\|(?P<second>.+)$')
+
 
 def cronparse(s):
     match = pattern.match(s)
@@ -18,6 +18,7 @@ def cronparse(s):
         print(match.groupdict())
         return Cron(**match.groupdict())
     return None
+
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):

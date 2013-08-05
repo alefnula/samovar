@@ -8,14 +8,14 @@ from ._parsing import HgStyle, HgLexer, PARSERS
 
 class Command(BaseCommand):
     '''Prints heads in repositories'''
-    
+
     Style = HgStyle
     Lexer = HgLexer
     LexerConfig = {
         'parse'  : True,
         'parser' : PARSERS['changeset'],
     }
-    
+
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
             status, output, error = repo.hg.heads()

@@ -3,7 +3,6 @@ __date__      = '02 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 from tea.commander import BaseCommand
-# samovar imports
 from ._parsing import HgStyle, HgLexer
 
 
@@ -22,11 +21,11 @@ class Command(BaseCommand):
             'help'    : 'Print filenames instead of deleting them'
         }),
     )
-    
+
     Style       = HgStyle
     Lexer       = HgLexer
-    LexerConfig = {'parse': True} 
-    
+    LexerConfig = {'parse': True}
+
     def handle(self, purge_all, only_print, *args, **kwargs):
         self.only_print = only_print
         #repo_paths = []
@@ -47,7 +46,7 @@ class Command(BaseCommand):
 #                        rmfile(file_to_remove)
 #                    self.add_result(self.config.active_path, 0, file_to_remove, '')
 #                dirs_to_delete.append(root)
-#            
+#
 #            for dir_to_delete in sorted(dirs_to_delete, key=lambda x: len(x), reverse=True):
 #                try:
 #                    if not only_print:
