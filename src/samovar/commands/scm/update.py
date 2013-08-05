@@ -30,5 +30,5 @@ class Command(BaseCommand):
 
     def handle(self, clean, rev, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.update(revision=rev, clean=clean)
+            status, output, error = repo.update(revision=rev, clean=clean)
             self.ui.report(repo, status, {'output': output, 'error': error})

@@ -44,5 +44,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.diff(**kwargs)
+            status, output, error = repo.diff(**kwargs)
             self.ui.report(repo, status, {'output': output, 'error': error})

@@ -17,5 +17,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.branch()
+            status, output, error = repo.branch()
             self.ui.report(repo, status, {'output': output, 'error': error})

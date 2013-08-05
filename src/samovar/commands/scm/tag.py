@@ -23,5 +23,5 @@ class Command(BaseCommand):
 
     def handle(self, tag, local, message, user):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.tag(tag, local=local, message=message, user=user)
+            status, output, error = repo.tag(tag, local=local, message=message, user=user)
             self.ui.report(repo, status, {'output': output, 'error': error})

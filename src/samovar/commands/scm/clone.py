@@ -23,5 +23,5 @@ class Command(BaseCommand):
         if delete and os.path.exists(self.config.active_path):
             shutil.remove(self.config.active_path)
         for repo in self.config.repositories:
-            status, output, error = repo.hg.clone()
+            status, output, error = repo.clone()
             self.ui.report(repo, status, {'output': output, 'error': error})

@@ -30,7 +30,7 @@ class Command(BaseCommand):
         self.only_print = only_print
         #repo_paths = []
         for repo in self.config.repositories:
-            status, output, error = repo.hg.purge(purge_all=purge_all, only_print=only_print)
+            status, output, error = repo.purge(purge_all=purge_all, only_print=only_print)
             self.ui.report(repo, status, {'output': output, 'error': error})
             #repo_paths.append(repo.path)
         # TODO: Finihs removig files that are not part of any repository (e.g. os.path.join(self.config.active_path, 'bin'))

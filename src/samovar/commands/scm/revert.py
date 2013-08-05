@@ -4,25 +4,16 @@ __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 # tea imports
 from tea.commander import BaseCommand
-from ._parsing import HgStyle, HgLexer, Token, PARSERS
+from ._parsing import HgStyle, HgLexer
 
 
 class Command(BaseCommand):
-    '''Perform hg outgoing on all required repositories'''
+    '''Perform hg revert on all requested repositories'''
 
     Style = HgStyle
     Lexer = HgLexer
-    LexerConfig = {
-        'statuses' : {
-            0: Token.Changed,
-            1: Token.NoChanges,
-           -1: Token.Changed,  # repository deleted
-        },
-        'parse'  : True,
-        'parser' : PARSERS['changeset']
-    }
 
     def handle(self, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.outgoing()
+            status, output, error = repo.revert()
             self.ui.report(repo, status, {'output': output, 'error': error})

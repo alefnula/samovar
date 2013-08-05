@@ -29,7 +29,7 @@ class Command(BaseCommand):
         else:
             for repo in self.config.repositories:
                 commiter = self._get_commiter(repo, kwargs.get('user'))
-                status, output, error = repo.hg.commit(message=message, addremove=kwargs.get('addremove'),
+                status, output, error = repo.commit(message=message, addremove=kwargs.get('addremove'),
                                                        amend=kwargs.get('amend'), user=commiter)
                 self.ui.report(repo, status, {'output': output, 'error': error})
 

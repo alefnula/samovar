@@ -32,5 +32,5 @@ class Command(BaseCommand):
 
     def handle(self, limit, follow, copies, graph, user, branch, *args, **kwargs):
         for repo in self.config.repositories:
-            status, output, error = repo.hg.log(limit, follow, copies, graph, user, branch)
+            status, output, error = repo.log(limit, follow, copies, graph, user, branch)
             self.ui.report(repo, status, {'output': output, 'error': error})
