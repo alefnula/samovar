@@ -9,12 +9,6 @@ import os
 import sys
 import time
 
-try:
-    input = raw_input  # py2
-except NameError:
-    pass               # py3
-
-
 PREFIX = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.extend([
     os.path.join(PREFIX, 'tea',     'src'),
@@ -22,6 +16,7 @@ sys.path.extend([
 ])
 
 from tea import shutil
+from tea.utils.six.moves import input
 from tea.system import platform
 if platform.is_a(platform.WINDOWS):
     get_time = time.clock
@@ -75,13 +70,13 @@ def setup_readline():
                 return [i for i in complete_from if i.startswith(text)][state]
             except KeyError:
                 return None
-        
+
         readline.rl.read_inputrc(os.path.join(os.path.dirname(__file__), 'svreadline.ini'))
         readline.parse_and_bind('tab: complete')
         readline.set_completer(completer)
     except:
         pass
-        
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

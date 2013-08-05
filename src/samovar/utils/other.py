@@ -28,7 +28,8 @@ def rotate_logfile(logfile):
             try:
                 num = int(f.rpartition('.')[-1])
                 files[num] = f
-            except: pass
+            except:
+                pass
         for num in sorted(files, reverse=True):
             shutil.move('%s.%s' % (logfile, num), '%s.%s' % (logfile, num + 1))
         shutil.move(logfile, '%s.0' % logfile)
@@ -80,13 +81,9 @@ def get_repos_from_checkout(checkout_path, url, username, password, cls):
     for root, directories, _ in os.walk(checkout_path):
         if '.hg' in directories:
             name = root.replace(checkout_path, '').replace('\\', '/').strip('/')
-            repos.append(cls(
-                name     = name,
-                path     = root,
-                source   = urlparse.urlunparse(parsed._replace(path='/'.join([parsed.path, name]))),
-                username = username,
-                password = password,
-            ))
+            repos.append(cls(name=name, path=root,
+                             source=urlparse.urlunparse(parsed._replace(path='/'.join([parsed.path, name]))),
+                             username=username, password=password))
             del directories[:]
     return repos
 
@@ -109,7 +106,7 @@ def get_repos_from_bitbucket(ui, parsed, prefix, username, password):
                 repos.append((name, source))
             else:
                 if name.startswith(prefix):
-                    repos.append((name.replace(prefix, '', 1).strip('/'), source))  
+                    repos.append((name.replace(prefix, '', 1).strip('/'), source))
     else:
         url = urlparse.urlunparse(parsed)
         ui.error('Could not get %s: %s\n' % (url, data))
@@ -141,9 +138,12 @@ def get_repos_from_hgweb(ui, parsed, prefix, username, password):
 def setup_readline():
     try:
         import readline
+
         def complete(text, state):
             return (glob.glob(text + '*') + [None])[state]
+
         readline.set_completer_delims(' \t\n;')
         readline.parse_and_bind("tab: complete")
         readline.set_completer(complete)
-    except: pass
+    except:
+        pass

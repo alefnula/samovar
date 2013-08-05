@@ -2,19 +2,9 @@ __author__    = 'Viktor Kerkez <alefnula@gmail.com>'
 __date__      = '19 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
-
+from tea.utils import six
 from tea.parsing import Token, Style, Lexer, RegexLexer
 from samovar.utils import indent
-
-
-if type('') is not type(b''):
-    bytes_type = bytes
-    unicode_type = str
-    basestring_type = str
-else:
-    bytes_type = str
-    unicode_type = unicode
-    basestring_type = basestring
 
 
 class HgStyle(Style):
@@ -24,7 +14,7 @@ class HgStyle(Style):
         Token.Changed    : '#ffff00',
         Token.Ok         : '#00ff00',
         Token.Failed     : '#ff0000',
-        
+
         # Color tokens
         Token.Normal     : '',
         Token.White      : '#ffffff',
@@ -41,19 +31,18 @@ class HgStyle(Style):
     }
 
 
-
 class HgLexer(Lexer):
     config = {
         'statuses' : {
             0: Token.Ok
         }
     }
-    
+
     def lex(self, data):
         # Merge statuses into config
         if 'statuses' not in self.config:
             self.config['statuses'] = HgLexer.config['statuses']
-        text   = u'%s\n' % unicode_type(data['object']).strip('\n\r')
+        text   = u'%s\n' % six.text_type(data['object']).strip('\n\r')
         status = data['status']
         if status in self.config['statuses']:
             token = self.config['statuses'][status]
@@ -77,7 +66,6 @@ class HgLexer(Lexer):
                     yield Token.Text, indent(output) + '\n'
 
 
-
 PARSERS = {
     'changeset': {
         'root': [
@@ -90,7 +78,7 @@ PARSERS = {
     },
     'diff': {
         'root': [
-            (r'^diff.*$',          Token.White,      'root'),           
+            (r'^diff.*$',          Token.White,      'root'),
             (r'^--- .*$',          Token.Red,        'root'),
             (r'^\+\+\+ .*$',       Token.Green,      'root'),
             (r'^\+[^\+].*$',       Token.DarkGreen,  'root'),

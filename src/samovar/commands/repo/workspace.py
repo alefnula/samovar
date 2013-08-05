@@ -11,7 +11,6 @@ from tea.commander import BaseCommand
 from samovar import utils
 
 
-
 class WorkspaceNotFound(Exception):
     def __init__(self, name):
         super(WorkspaceNotFound, self).__init__()
@@ -22,16 +21,15 @@ class RepositoryNotFound(Exception):
     def __init__(self, name):
         super(RepositoryNotFound, self).__init__()
         self.name = name
-        
 
 
 class Command(BaseCommand):
     '''Workspaces management
-    
+
     Commands:
-    
+
     workspace switch                      # switch the currently active workspace
-    workspace export NAME workspace.json  # Export selected workspcae to workspace.json 
+    workspace export NAME workspace.json  # Export selected workspcae to workspace.json
     workspace import workspace.json       # Import a workspace from workspace.json
     workspace list                        # Prints out a list of all workspaces
     workspace get [NAME]                  # Prints information about the selected workspace
@@ -56,7 +54,7 @@ class Command(BaseCommand):
         self.ui.info('Repositories:')
         for repo in sorted(workspace.get('repositories', {})):
             self.ui.message('  %s' % repo)
-    
+
     def workspace_get(self, name):
         workspace = self.config.get('workspaces.%s' % name)
         if workspace is None:
@@ -73,7 +71,7 @@ class Command(BaseCommand):
             cmd  = args[0]
             args = args[1:]
             l    = len(args)
-            
+
             # Switch
             if cmd == 'switch' and l == 1:
                 name, _ = self.workspace_get(args[0])
@@ -120,7 +118,7 @@ class Command(BaseCommand):
                 # if it was current set the next one to be current
                 if self.config.active == name:
                     if len(self.config.get('workspaces')) > 0:
-                        self.config.set('active', self.config.get('workspaces').keys()[0])
+                        self.config.set('active', list(self.config.get('workspaces').keys())[0])
                     else:
                         self.config.delete('active')
             else:
