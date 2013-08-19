@@ -9,4 +9,3 @@ x64 = 'x64'
 # Configuration
 Release = 'Release'
 Debug   = 'Debug'
-

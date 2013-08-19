@@ -11,7 +11,7 @@ class DependencyGraphException(Exception):
 
 class Node(object):
     ''' Represents single node in graph '''
-    
+
     def __init__(self, item):
         if isinstance(item, dict):
             self.id    = item['id']
@@ -24,34 +24,34 @@ class Node(object):
         self.item      = item
         self.dependant = set()
         self.requires  = set()
-            
+
     def __str__(self):
         return "<Id: %s, Group: %s>" % (self.id, self.group)
-    
+
     __repr__ = __str__
 
 
 class NodeGroup(object):
     ''' Represents a group of nodes that form single graph '''
-    
+
     def __init__(self, name, nodes):
-        self.name  = name  
-        self.nodes = {n.id:n for n in nodes}
+        self.name  = name
+        self.nodes = {n.id : n for n in nodes}
         self._resolve_dependencies()
         self.levels = self._populate_levels()
-    
-    def _add_node(self, id, nodes):
-        node = self.nodes[id]
+
+    def _add_node(self, node_id, nodes):
+        node = self.nodes[node_id]
         nodes.append(node)
         for req in node.requires:
             self._add_node(req.id, nodes)
-    
+
     def get_in_order(self, ids=None):
         if ids is None:
             ids = self.nodes.keys()
         dupl = []
-        for id in ids:
-            self._add_node(id, dupl)
+        for node_id in ids:
+            self._add_node(node_id, dupl)
         nodes  = []
         for node in dupl[::-1]:
             if node not in nodes:
@@ -60,10 +60,10 @@ class NodeGroup(object):
 
     def __iter__(self):
         return self.levels.__iter__()
-    
+
     def __getitem__(self, key):
         return self.levels[key]
-    
+
     def _populate_levels(self):
         levels = []
         nodes = self.nodes.values()
@@ -78,7 +78,7 @@ class NodeGroup(object):
                 levels.append(set(next_level))
             map(nodes.remove, levels[-1])
         return levels
-    
+
     def _resolve_dependencies(self):
         for  node in self.nodes.values():
             for dep in node.deps:
@@ -87,37 +87,37 @@ class NodeGroup(object):
                     self.nodes[dep].dependant.add(node)
                 except KeyError as e:
                     raise DependencyGraphException(e.message)
-        
+
     def __str__(self):
         return '<Group: %s, Nodes: [%s]>' % (self.name, ', '.join(self.nodes))
-    
+
     __repr__ = __str__
 
 
 class DependencyGraph(object):
     ''' Dependency graph of nodes. '''
-    
+
     def __init__(self, items):
         nodes = map(Node, items)
         group_names = set((n.group for n in nodes))
         self.groups = {}
         for group in group_names:
             self.groups[group] = NodeGroup(group, filter(lambda n: n.group == group, nodes))
-        self.nodes = {n.id:n for n in nodes}
-    
+        self.nodes = {n.id : n for n in nodes}
+
     def get_in_order(self, ids=None, group=None):
         return self.groups[group].get_in_order(ids)
-        
+
     def __getitem__(self, group):
         return self.groups[group]
 
     def __iter__(self):
         return self.groups.values().__iter__()
-    
-    
+
+
 def main():
     import pprint
-    
+
     projects = [
         {'id': 'p4', 'deps': ['p2', 'p3'], 'group': 'g1'},
         {'id': 'p1', 'deps': [], 'group': 'g1'},
@@ -131,6 +131,6 @@ def main():
         print(group.name.upper())
         for levels in group:
             pprint.pprint(levels)
-    
+
 if __name__ == '__main__':
     main()

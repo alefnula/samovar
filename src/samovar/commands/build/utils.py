@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class Step(object):
     MSBUILD = 'msbuild'
     SHELL   = 'shell'
-    
+
     def __init__(self, project, data):
         self.project     = project
         self.type        = data.get('type')
@@ -30,7 +30,7 @@ class Step(object):
         elif self.type == Step.SHELL:
             # Get success exit codes
             success = data.get('success', [0])
-            if isinstance(success, basestring): 
+            if isinstance(success, basestring):
                 self.success = map(int, success.split(','))
             elif isinstance(success, int):
                 self.success = [success]
@@ -41,7 +41,7 @@ class Step(object):
                 self.commands = [data['command']]
             else:
                 self.commands = data['commands']
-             
+
         else:
             logger.error('Invalid project type: %s' % self.type)
 
@@ -58,7 +58,7 @@ class Step(object):
         return execute_in_environment(config.environment, *command)
 
     def _command(self, config):
-        status, output, error = (0, '', '') 
+        status, output, error = (0, '', '')
         for command in self.commands:
             if isinstance(command, basestring):
                 command = shutil.split(string.Template(command).safe_substitute(**config.environment))
@@ -68,12 +68,13 @@ class Step(object):
             status += 0 if s in self.success else 1
             output += o
             error  += e
-            if status != 0: break
+            if status != 0:
+                break
         return status, output, error
-    
+
     def run(self, config):
         # Calculate the working dir
-        working_dir = self.project.path if self.working_dir is None else os.path.join(self.project.path, self.working_dir) 
+        working_dir = self.project.path if self.working_dir is None else os.path.join(self.project.path, self.working_dir)
         with shutil.goto(working_dir) as ok:
             if not ok:
                 error = 'Could not change directory to "%s"!' % working_dir
@@ -90,25 +91,25 @@ class Step(object):
 
 
 class Project(object):
-    def __init__(self, repo, id, config):
+    def __init__(self, repo, project_id, config):
         self.path  = repo.path
-        self.id    = id
-        self.name  = id
+        self.id    = project_id
+        self.name  = project_id
         self.deps  = config.get('deps',  [])
         self.steps = [Step(self, data) for data in config.get('steps', [])]
-    
+
     def __str__(self):
         return self.name
-    
+
     def __repr__(self):
         return 'Project <%s>' % self.name
-    
+
     def __serialize__(self):
         return {
             'name' : self.name,
             'type' : 'Project',
             'path' : self.path,
-        } 
+        }
 
     def build(self, config):
         status, output, error = 0, '', ''
@@ -117,25 +118,27 @@ class Project(object):
             status += s
             output += o
             error  += e
-            if s != 0: break
+            if s != 0:
+                break
         return status, output, error
 
 
 class BuildRepo(object):
     def __init__(self, repo, sv):
         self.path  = repo.path
-        self.name  = repo.name 
+        self.name  = repo.name
         self.id    = sv['id']
         if 'build' in sv:
             self.deps     = sv['build'].get('deps', [])
-            self.projects = DG([Project(self, id, data) for id, data in sv['build'].get('projects', {}).items()]).get_in_order()
+            self.projects = DG([Project(self, project_id, data) for project_id, data in
+                                sv['build'].get('projects', {}).items()]).get_in_order()
         else:
             self.deps     = []
             self.projects = []
 
     def __str__(self):
         return self.name
-    
+
     def __repr__(self):
         return 'BuildRepo <%s>' % self.name
 
@@ -170,11 +173,10 @@ class BuildConfig(object):
             'Configuration'  : self.configuration,
             'Timestamp'      : self.timestamp.strftime(self.timestamp_fmt),
             'python'         : sys.executable,
-            'Minor'          : str(((d.year-2000) << 4) + d.month), 
+            'Minor'          : str(((d.year - 2000) << 4) + d.month),
             'Build'          : str((d.day << 11) + (d.hour << 6) + d.minute),
             'BuildNumber'    : str(self.build_number)
         }
-
 
 
 def load_build(repo):
