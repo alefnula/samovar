@@ -5,7 +5,7 @@ syntax: glob
 .pydevproject
 *.pyc
 *.log
-build
+_build
 dist
 MANIFEST
 docs/_build
