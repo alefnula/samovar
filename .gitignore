@@ -1,0 +1,9 @@
+*.py[cod]
+.DS_Store
+dist
+build
+MANIFEST
+docs/_build
+.settings
+.project
+.pydevproject
