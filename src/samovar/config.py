@@ -10,7 +10,7 @@ try:
 except ImportError:
     from urllib.parse import urlparse  # py3
 
-from tea.scm import Repository
+from samovar.scm import Repository
 from tea.system import platform
 from tea.ds.config import MultiConfig
 from tea.console.color import cprint, Color

@@ -5,8 +5,9 @@ __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 import os
 import sys
 import logging
+
 from tea import system
-from tea.commander import Application
+from samovar.commander import Application
 from tea.logger import configure_logging
 
 
@@ -15,7 +16,7 @@ def main(args):
 
     from samovar import options
     from samovar.config import Configuration
-    from samovar.parsing import StatusStyle, StatusLexer
+    from samovar.styles import StatusStyle, StatusLexer
 
     class Samovar(Application):
         def __init__(self):

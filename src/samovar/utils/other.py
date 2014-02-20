@@ -16,7 +16,7 @@ except:
     import urllib.parse as urlparse  # @UnresolvedImport @Reimport
 
 # tea imports
-from tea import shutil
+from tea import shell
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,8 @@ def rotate_logfile(logfile):
             except:
                 pass
         for num in sorted(files, reverse=True):
-            shutil.move('%s.%s' % (logfile, num), '%s.%s' % (logfile, num + 1))
-        shutil.move(logfile, '%s.0' % logfile)
+            shell.move('%s.%s' % (logfile, num), '%s.%s' % (logfile, num + 1))
+        shell.move(logfile, '%s.0' % logfile)
 
 
 def find_exe(prefix, path, alternative):

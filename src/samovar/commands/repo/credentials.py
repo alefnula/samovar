@@ -7,7 +7,7 @@ try:
 except ImportError:
     import urllib.parse as urlparse
 
-from tea.commander import BaseCommand
+from samovar.commander import BaseCommand
 from tea.utils.crypto import encrypt
 
 

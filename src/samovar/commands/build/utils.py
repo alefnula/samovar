@@ -9,8 +9,8 @@ import string
 import logging
 from datetime import datetime
 # tea imports
-from tea import shutil
-from tea.process import execute_in_environment
+from tea import shell
+from tea.process import execute
 
 from .dependency_graph import DependencyGraph as DG
 
@@ -55,16 +55,16 @@ class Step(object):
             '/t:%s' %  os.path.normpath(self.project.id.replace('.', '_')),
             self.sln,
         ]
-        return execute_in_environment(config.environment, *command)
+        return execute(*command, environment=config.environment)
 
     def _command(self, config):
         status, output, error = (0, '', '')
         for command in self.commands:
             if isinstance(command, basestring):
-                command = shutil.split(string.Template(command).safe_substitute(**config.environment))
+                command = shell.split(string.Template(command).safe_substitute(**config.environment))
             else:
                 command = map(lambda part: string.Template(part).safe_substitute(**config.environment), command)
-            s, o, e = execute_in_environment(config.environment, *command)
+            s, o, e = execute(*command, environment=config.environment)
             status += 0 if s in self.success else 1
             output += o
             error  += e
@@ -75,7 +75,7 @@ class Step(object):
     def run(self, config):
         # Calculate the working dir
         working_dir = self.project.path if self.working_dir is None else os.path.join(self.project.path, self.working_dir)
-        with shutil.goto(working_dir) as ok:
+        with shell.goto(working_dir) as ok:
             if not ok:
                 error = 'Could not change directory to "%s"!' % working_dir
                 logger.error(error)

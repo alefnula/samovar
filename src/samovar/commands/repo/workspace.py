@@ -5,7 +5,7 @@ __date__      = '02 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 import json
-from tea.commander import BaseCommand
+from samovar.commander import BaseCommand
 from samovar import utils
 
 

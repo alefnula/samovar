@@ -3,8 +3,10 @@ __date__      = '02 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 import os
-from tea import shutil
-from tea.commander import BaseCommand
+
+from tea import shell
+from samovar.commander import BaseCommand
+
 # samovar imports
 from . import const
 from . import utils
@@ -57,7 +59,7 @@ class Command(BaseCommand):
                                project.path.replace(self.config.active_path, '').strip('\\/'),
                                project.id + '.log')
         if not os.path.isdir(os.path.dirname(logpath)):
-            shutil.mkdir(os.path.dirname(logpath))
+            shell.mkdir(os.path.dirname(logpath))
         with open(logpath, 'wb') as f:
             f.write(data)
 
@@ -84,12 +86,12 @@ class Command(BaseCommand):
 
         # if --delete
         if delete and os.path.exists(config.output_path):
-            if not shutil.remove(config.output_path):
+            if not shell.remove(config.output_path):
                 self.ui.error('Abort: "%s" could not be deleted' % config.output_path)
                 return
         # create output path if not exist
         if not os.path.exists(config.output_path):
-            shutil.mkdir(config.output_path)
+            shell.mkdir(config.output_path)
 
         # Build
         for repo in repos:

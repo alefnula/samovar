@@ -3,7 +3,7 @@ __date__      = '19 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 from tea.utils import six
-from tea.parsing import Token, Style, Lexer, RegexLexer
+from samovar.parsing import Token, Style, Lexer, RegexLexer
 from samovar.utils import indent
 
 

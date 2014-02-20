@@ -3,9 +3,10 @@ __date__      = '02 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 import os
+
 from tea.system import platform
 from tea.process import execute
-from tea.commander import BaseCommand
+from samovar.commander import BaseCommand
 from tea.console.color import cprint, Color
 
 

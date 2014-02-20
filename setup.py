@@ -1,5 +1,5 @@
-__author__    = 'Viktor Kerkez <alefnula@gmail.com>'
-__date__      = '20 October 2010'
+__author__ = 'Viktor Kerkez <alefnula@gmail.com>'
+__date__ = '20 October 2010'
 __copyright__ = 'Copyright (c) 2010 Viktor Kerkez'
 
 import io
@@ -19,15 +19,18 @@ setup(
     license='BSD',
     packages=[
         'samovar',
+        'samovar.commander',
         'samovar.commands',
         'samovar.commands.build',
         'samovar.commands.hg',
         'samovar.commands.other',
         'samovar.commands.repo',
         'samovar.options',
+        'samovar.parsing',
+        'samovar.scm'
         'samovar.utils',
     ],
-    package_dir={'' : 'src'},
+    package_dir={'': 'src'},
     scripts=[
         'scripts/sv.py',
     ],

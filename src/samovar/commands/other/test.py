@@ -3,7 +3,7 @@ __date__      = '19 January 2013'
 __copyright__ = 'Copyright (c) 2013 Viktor Kerkez'
 
 # tea imports
-from tea.commander import BaseCommand
+from samovar.commander import BaseCommand
 
 
 class Command(BaseCommand):

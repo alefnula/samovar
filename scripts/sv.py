@@ -15,7 +15,7 @@ sys.path.extend([
     os.path.join(PREFIX, 'samovar', 'src'),
 ])
 
-from tea import shutil
+from tea import shell
 from tea.utils.six.moves import input
 from tea.system import platform
 if platform.is_a(platform.WINDOWS):
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                         command = command.replace('timeit ', '', 1)
                         timeit = True
                     start_time = get_time()
-                    subprocess.call([sys.executable, os.path.abspath(__file__)] + shutil.split(command), shell=False)
+                    subprocess.call([sys.executable, os.path.abspath(__file__)] + shell.split(command), shell=False)
                     if timeit:
                         print('Duration: %.4fs', get_time() - start_time)
         except KeyboardInterrupt:
